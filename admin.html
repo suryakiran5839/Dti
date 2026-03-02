@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | StudentCMS</title>
+    <meta name="description" content="Secure admin login for the Student Complaint Management System." />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body style="display:flex;flex-direction:column;min-height:100vh;">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <span class="brand-icon">🎓</span>
+            <div>
+                <span class="brand-text">StudentCMS</span>
+                <span class="brand-sub">Complaint Management System</span>
+            </div>
+        </a>
+        <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="submit.html">📝 Submit Complaint</a></li>
+            <li><a href="track.html">🔍 Track Complaint</a></li>
+            <li><a href="admin.html">🔒 Admin</a></li>
+        </ul>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-logo">🔐</div>
+            <h2>Admin Login</h2>
+            <p class="login-sub">Sign in to the admin dashboard to manage student complaints.</p>
+
+            <div id="alertArea"></div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="username">Username <span class="required">*</span></label>
+                    <input type="text" id="username" placeholder="Enter username" autocomplete="username" />
+                    <p class="field-error" id="usernameError">Please enter your username.</p>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <div style="position:relative;">
+                        <input type="password" id="password" placeholder="Enter password"
+                            autocomplete="current-password" style="padding-right:3rem;" />
+                        <button type="button" id="togglePwd"
+                            style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;"
+                            aria-label="Toggle password">👁️</button>
+                    </div>
+                    <p class="field-error" id="passwordError">Please enter your password.</p>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="loginBtn" style="margin-top:.25rem;">
+                    🔓 Login
+                </button>
+            </form>
+
+            <p style="color:var(--text-muted);font-size:.75rem;margin-top:1.25rem;">
+                <a href="index.html" style="color:var(--primary);text-decoration:none;font-weight:600;">← Back to
+                    Home</a>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <strong>StudentCMS</strong> &mdash; Student Complaint Management System &copy; 2026
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        initNavbar();
+
+        // Redirect if already logged in
+        if (isAdminLoggedIn()) {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Toggle password visibility
+        document.getElementById('togglePwd').addEventListener('click', function () {
+            const pwd = document.getElementById('password');
+            const show = pwd.type === 'password';
+            pwd.type = show ? 'text' : 'password';
+            this.textContent = show ? '🙈' : '👁️';
+        });
+
+        ['username', 'password'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                clearFieldError(id);
+                clearAlert('alertArea');
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', e => {
+            e.preventDefault();
+            clearAllErrors(['username', 'password']);
+            clearAlert('alertArea');
+
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            let valid = true;
+
+            if (!user) { showFieldError('username', 'Please enter your username.'); valid = false; }
+            if (!pass) { showFieldError('password', 'Please enter your password.'); valid = false; }
+            if (!valid) return;
+
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Logging in…';
+
+            setTimeout(() => {
+                if (user === ADMIN_USER && pass === ADMIN_PASS) {
+                    setAdminSession(true);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showAlert('alertArea', 'error', 'Invalid username or password. Please try again.', '🔐');
+                    btn.disabled = false;
+                    btn.textContent = '🔓 Login';
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                }
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

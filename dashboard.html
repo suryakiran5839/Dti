@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | StudentCMS</title>
+    <meta name="description" content="Admin dashboard to manage and resolve student complaints." />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        body {
+            background: #EEF1FB;
+        }
+
+        /* Sidebar-less top bar for admin */
+        .admin-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: .9rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-bar .admin-info {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .admin-name {
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: .95rem;
+        }
+
+        .admin-role {
+            font-size: .72rem;
+            color: var(--text-muted);
+        }
+
+        .dashboard-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Complaint row action */
+        .action-cell {
+            white-space: nowrap;
+            display: flex;
+            gap: .4rem;
+            align-items: center;
+        }
+
+        .cat-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .75rem;
+            font-weight: 600;
+            padding: .2rem .6rem;
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--primary-dark);
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .complaint-id-cell {
+            font-family: 'Courier New', monospace;
+            font-size: .8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Table overflow-x on mobile with min widths */
+        .table-wrapper table {
+            min-width: 860px;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .no-results .icon {
+            font-size: 3rem;
+            margin-bottom: .75rem;
+            display: block;
+        }
+
+        /* Responsive stats */
+        @media (max-width: 600px) {
+            .admin-bar {
+                padding: .75rem 1rem;
+            }
+
+            .dashboard-wrap {
+                padding: 1.25rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <span class="brand-icon">🎓</span>
+            <div>
+                <span class="brand-text">StudentCMS</span>
+                <span class="brand-sub">Complaint Management System</span>
+            </div>
+        </a>
+        <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="submit.html">📝 Submit Complaint</a></li>
+            <li><a href="track.html">🔍 Track Complaint</a></li>
+            <li><a href="admin.html">🔒 Admin</a></li>
+        </ul>
+    </nav>
+
+    <!-- ADMIN BAR -->
+    <div class="admin-bar">
+        <div class="admin-info">
+            <div class="admin-avatar">👨‍💼</div>
+            <div>
+                <div class="admin-name">Administrator</div>
+                <div class="admin-role">Complaint Management Panel</div>
+            </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="logout()">🚪 Logout</button>
+    </div>
+
+    <!-- DASHBOARD CONTENT -->
+    <div class="dashboard-wrap">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>📋 Complaints Dashboard</h2>
+            <p>Manage and update the status of all student complaints.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">📋</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">Total Complaints</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">🕐</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statPending">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">🔄</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statInProgress">0</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statResolved">0</div>
+                    <div class="stat-label">Resolved</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Area -->
+        <div id="alertArea"></div>
+
+        <!-- Toolbar + Filters -->
+        <div class="dashboard-toolbar">
+            <div>
+                <div class="toolbar-title">All Complaints</div>
+                <div class="toolbar-count" id="countLabel">Loading…</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="refreshDashboard()">🔄 Refresh</button>
+        </div>
+
+        <div class="filter-bar">
+            <input type="search" id="searchInput" placeholder="🔍 Search by name, roll no, or ID…"
+                oninput="applyFilters()" />
+            <select id="filterCategory" onchange="applyFilters()">
+                <option value="">All Categories</option>
+                <option value="Infrastructure">🏗️ Infrastructure</option>
+                <option value="Hygiene">🧹 Hygiene</option>
+                <option value="Hostel">🏠 Hostel</option>
+                <option value="Labs">🔬 Labs</option>
+                <option value="Other">📋 Other</option>
+            </select>
+            <select id="filterStatus" onchange="applyFilters()">
+                <option value="">All Statuses</option>
+                <option value="Pending">🕐 Pending</option>
+                <option value="In Progress">🔄 In Progress</option>
+                <option value="Resolved">✅ Resolved</option>
+            </select>
+            <select id="filterDept" onchange="applyFilters()">
+                <option value="">All Departments</option>
+                <option>Computer Science</option>
+                <option>Electronics & Communication</option>
+                <option>Mechanical Engineering</option>
+                <option>Civil Engineering</option>
+                <option>Electrical Engineering</option>
+                <option>Information Technology</option>
+                <option>Chemical Engineering</option>
+                <option>Biotechnology</option>
+                <option>Other</option>
+            </select>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrapper">
+            <table id="complaintsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Complaint ID</th>
+                        <th>Student Name</th>
+                        <th>Roll No.</th>
+                        <th>Department</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Submitted</th>
+                        <th>Current Status</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="10">
+                            <div class="no-results"><span class="icon">⏳</span>Loading complaints…</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <strong>StudentCMS</strong> &mdash; Admin Dashboard &copy; 2026
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        requireAdminAuth();
+        initNavbar();
+
+        let allComplaints = [];
+
+        function refreshDashboard() {
+            allComplaints = getComplaints();
+            updateStats(allComplaints);
+            applyFilters();
+        }
+
+        function updateStats(list) {
+            const s = calcStats(list);
+            animateCounter(document.getElementById('statTotal'), s.total, 600);
+            animateCounter(document.getElementById('statPending'), s.pending, 600);
+            animateCounter(document.getElementById('statInProgress'), s.inProgress, 600);
+            animateCounter(document.getElementById('statResolved'), s.resolved, 600);
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            const cat = document.getElementById('filterCategory').value;
+            const status = document.getElementById('filterStatus').value;
+            const dept = document.getElementById('filterDept').value;
+
+            const filtered = allComplaints.filter(c => {
+                const matchSearch = !search ||
+                    c.name.toLowerCase().includes(search) ||
+                    c.roll.toLowerCase().includes(search) ||
+                    c.id.toLowerCase().includes(search) ||
+                    c.description.toLowerCase().includes(search);
+                const matchCat = !cat || c.category === cat;
+                const matchStatus = !status || c.status === status;
+                const matchDept = !dept || c.department === dept;
+                return matchSearch && matchCat && matchStatus && matchDept;
+            });
+
+            renderTable(filtered);
+            document.getElementById('countLabel').textContent =
+                `Showing ${filtered.length} of ${allComplaints.length} complaint${allComplaints.length !== 1 ? 's' : ''}`;
+        }
+
+        function renderTable(list) {
+            const tbody = document.getElementById('tableBody');
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+        <tr>
+          <td colspan="10">
+            <div class="no-results">
+              <span class="icon">📭</span>
+              <p>No complaints found matching your filters.</p>
+            </div>
+          </td>
+        </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map((c, i) => `
+      <tr id="row-${c.id}">
+        <td style="color:var(--text-muted);font-size:.8rem;">${i + 1}</td>
+        <td class="complaint-id-cell">${escHtml(c.id)}</td>
+        <td style="font-weight:600;color:var(--text-dark);">${escHtml(c.name)}</td>
+        <td>${escHtml(c.roll)}</td>
+        <td style="font-size:.82rem;">${escHtml(c.department)}</td>
+        <td><span class="cat-tag">${categoryIcon(c.category)} ${escHtml(c.category)}</span></td>
+        <td style="max-width:200px;">
+          <div style="max-height:3.5em;overflow:hidden;font-size:.82rem;color:var(--text-muted);" title="${escHtml(c.description)}">
+            ${escHtml(c.description)}
+          </div>
+        </td>
+        <td style="font-size:.78rem;color:var(--text-muted);white-space:nowrap;">${formatDate(c.createdAt)}</td>
+        <td>${statusBadge(c.status)}</td>
+        <td class="action-cell">
+          <select class="table-status-select" id="sel-${c.id}" onchange="updateStatus('${c.id}', this.value)">
+            <option value="Pending"     ${c.status === 'Pending' ? 'selected' : ''}>🕐 Pending</option>
+            <option value="In Progress" ${c.status === 'In Progress' ? 'selected' : ''}>🔄 In Progress</option>
+            <option value="Resolved"    ${c.status === 'Resolved' ? 'selected' : ''}>✅ Resolved</option>
+          </select>
+        </td>
+      </tr>
+    `).join('');
+        }
+
+        function updateStatus(id, newStatus) {
+            const ok = updateComplaintStatus(id, newStatus);
+            if (!ok) {
+                showAlert('alertArea', 'error', 'Failed to update complaint status. Please refresh.');
+                return;
+            }
+            // Refresh in-memory list
+            allComplaints = getComplaints();
+            updateStats(allComplaints);
+
+            // Update badge in the row without full re-render (smooth UX)
+            const row = document.getElementById('row-' + id);
+            if (row) {
+                const badgeCell = row.querySelectorAll('td')[8];
+                if (badgeCell) {
+                    badgeCell.innerHTML = statusBadge(newStatus);
+                }
+            }
+
+            showAlert('alertArea', 'success',
+                `Status updated to <strong>${newStatus}</strong> for complaint <strong>${id}</strong>.`, '✅');
+
+            // Auto-clear alert after 3s
+            setTimeout(() => clearAlert('alertArea'), 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                setAdminSession(false);
+                window.location.href = 'admin.html';
+            }
+        }
+
+        function escHtml(s) {
+            return String(s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Init
+        window.addEventListener('DOMContentLoaded', refreshDashboard);
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshDashboard, 30000);
+    </script>
+</body>
+
+</html>

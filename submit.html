@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Complaint | StudentCMS</title>
+    <meta name="description"
+        content="Submit a new campus complaint for infrastructure, hygiene, hostel, labs, or other issues." />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .success-box {
+            background: var(--bg-card);
+            border: 1.5px solid #86EFAC;
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            max-width: 480px;
+            margin: 0 auto;
+            animation: slideIn .45s ease;
+        }
+
+        .success-box .success-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-box h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: .5rem;
+        }
+
+        .success-box p {
+            color: var(--text-muted);
+            font-size: .9rem;
+            margin-bottom: 1rem;
+        }
+
+        .complaint-id-display {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: #fff;
+            border-radius: 10px;
+            padding: .9rem 1.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            margin: 1rem 0;
+            user-select: all;
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .8rem;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: 600;
+            margin-top: -.25rem;
+        }
+
+        .copy-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <span class="brand-icon">🎓</span>
+            <div>
+                <span class="brand-text">StudentCMS</span>
+                <span class="brand-sub">Complaint Management System</span>
+            </div>
+        </a>
+        <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="submit.html">📝 Submit Complaint</a></li>
+            <li><a href="track.html">🔍 Track Complaint</a></li>
+            <li><a href="admin.html">🔒 Admin</a></li>
+        </ul>
+    </nav>
+
+    <!-- PAGE CONTENT -->
+    <main style="flex:1; padding: 2.5rem 1.5rem; display:flex; flex-direction:column; align-items:center;">
+
+        <!-- Alert area -->
+        <div id="alertArea" style="width:100%;max-width:680px;"></div>
+
+        <!-- Success Section (hidden until submission) -->
+        <div id="successSection" style="display:none; width:100%; text-align:center;">
+            <div class="success-box">
+                <div class="success-icon">🎉</div>
+                <h3>Complaint Submitted Successfully!</h3>
+                <p>Your complaint has been registered. Use the Complaint ID below to track its status.</p>
+                <div class="complaint-id-display" id="displayedId">—</div>
+                <button class="copy-btn" id="copyBtn" onclick="copyId()">📋 Copy ID</button>
+                <div style="display:flex; gap:.75rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap;">
+                    <a href="track.html" class="btn btn-primary btn-sm">🔍 Track Now</a>
+                    <button class="btn btn-outline btn-sm" onclick="resetForm()">📝 Submit Another</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div id="formSection" style="width:100%;">
+            <div class="form-card">
+                <h2>📝 Raise a Complaint</h2>
+                <p class="form-subtitle">Fill in the form below. All fields are required. A unique Complaint ID will be
+                    generated upon submission.</p>
+
+                <form id="complaintForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentName">Student Name <span class="required">*</span></label>
+                            <input type="text" id="studentName" placeholder="e.g. Ravi Kumar" autocomplete="name" />
+                            <p class="field-error" id="studentNameError">Please enter your name.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="rollNumber">Roll Number <span class="required">*</span></label>
+                            <input type="text" id="rollNumber" placeholder="e.g. CS2023001" />
+                            <p class="field-error" id="rollNumberError">Please enter your roll number.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="department">Department <span class="required">*</span></label>
+                            <select id="department">
+                                <option value="">— Select Department —</option>
+                                <option>Computer Science</option>
+                                <option>Electronics & Communication</option>
+                                <option>Mechanical Engineering</option>
+                                <option>Civil Engineering</option>
+                                <option>Electrical Engineering</option>
+                                <option>Information Technology</option>
+                                <option>Chemical Engineering</option>
+                                <option>Biotechnology</option>
+                                <option>Other</option>
+                            </select>
+                            <p class="field-error" id="departmentError">Please select your department.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Complaint Category <span class="required">*</span></label>
+                            <select id="category">
+                                <option value="">— Select Category —</option>
+                                <option value="Infrastructure">🏗️ Infrastructure</option>
+                                <option value="Hygiene">🧹 Hygiene</option>
+                                <option value="Hostel">🏠 Hostel Facilities</option>
+                                <option value="Labs">🔬 Laboratory Equipment</option>
+                                <option value="Other">📋 Other</option>
+                            </select>
+                            <p class="field-error" id="categoryError">Please select a complaint category.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Complaint Description <span class="required">*</span></label>
+                        <textarea id="description" rows="5"
+                            placeholder="Describe your complaint in detail — include location, time, and any relevant information..."></textarea>
+                        <p class="field-error" id="descriptionError">Please describe your complaint (at least 20
+                            characters).</p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                        📨 Submit Complaint
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <strong>StudentCMS</strong> &mdash; Student Complaint Management System &copy; 2026
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        initNavbar();
+
+        const form = document.getElementById('complaintForm');
+        const formSection = document.getElementById('formSection');
+        const successSec = document.getElementById('successSection');
+        const displayedId = document.getElementById('displayedId');
+        let lastId = '';
+
+        // Live clear errors on input
+        ['studentName', 'rollNumber', 'department', 'category', 'description'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => clearFieldError(id));
+        });
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            clearAllErrors(['studentName', 'rollNumber', 'department', 'category', 'description']);
+            clearAlert('alertArea');
+
+            const name = document.getElementById('studentName').value.trim();
+            const roll = document.getElementById('rollNumber').value.trim();
+            const dept = document.getElementById('department').value;
+            const cat = document.getElementById('category').value;
+            const desc = document.getElementById('description').value.trim();
+
+            let valid = true;
+
+            if (!name) { showFieldError('studentName', 'Please enter your full name.'); valid = false; }
+            if (!roll) { showFieldError('rollNumber', 'Please enter your roll number.'); valid = false; }
+            if (!dept) { showFieldError('department', 'Please select your department.'); valid = false; }
+            if (!cat) { showFieldError('category', 'Please select a complaint category.'); valid = false; }
+            if (desc.length < 20) { showFieldError('description', 'Description must be at least 20 characters.'); valid = false; }
+
+            if (!valid) {
+                showAlert('alertArea', 'error', 'Please fix the errors above before submitting.');
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Submitting…';
+
+            setTimeout(() => {
+                const id = generateComplaintId();
+                const complaint = {
+                    id,
+                    name,
+                    roll,
+                    department: dept,
+                    category: cat,
+                    description: desc,
+                    status: 'Pending',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                };
+                addComplaint(complaint);
+
+                lastId = id;
+                displayedId.textContent = id;
+                formSection.style.display = 'none';
+                successSec.style.display = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                btn.disabled = false;
+                btn.textContent = '📨 Submit Complaint';
+            }, 600);
+        });
+
+        function copyId() {
+            navigator.clipboard.writeText(lastId).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => { btn.textContent = '📋 Copy ID'; }, 1800);
+            });
+        }
+
+        function resetForm() {
+            form.reset();
+            clearAllErrors(['studentName', 'rollNumber', 'department', 'category', 'description']);
+            formSection.style.display = '';
+            successSec.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

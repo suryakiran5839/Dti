@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudentCMS – Home | Student Complaint Management System</title>
+  <meta name="description" content="Digital platform for students to raise and track complaints on infrastructure, hygiene, hostel, labs and campus maintenance." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .cta-section {
+      background: linear-gradient(135deg, #E3F0FF, #F0F4FF);
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    .how-section { padding: 3.5rem 1.5rem; }
+    .how-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
+    .how-step { text-align: center; }
+    .step-num {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+      border-radius: 50%; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem;
+      margin: 0 auto 1rem; box-shadow: 0 4px 12px rgba(21,101,192,.3);
+    }
+    .how-step h3 { font-size: .95rem; font-weight: 700; color: var(--primary-dark); margin-bottom: .3rem; }
+    .how-step p  { font-size: .82rem; color: var(--text-muted); }
+    .categories-section { padding: 3rem 1.5rem; background: #F8FAFF; }
+    .cat-chips { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-top: 1.5rem; }
+    .cat-chip {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem; border-radius: 50px;
+      background: var(--bg-card); border: 1.5px solid var(--border);
+      font-size: .85rem; font-weight: 600; color: var(--primary);
+      box-shadow: var(--shadow-sm); transition: all var(--transition);
+    }
+    .cat-chip:hover { background: var(--primary); color: #fff; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <span class="brand-icon">🎓</span>
+    <div>
+      <span class="brand-text">StudentCMS</span>
+      <span class="brand-sub">Complaint Management System</span>
+    </div>
+  </a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">🏠 Home</a></li>
+    <li><a href="submit.html">📝 Submit Complaint</a></li>
+    <li><a href="track.html">🔍 Track Complaint</a></li>
+    <li><a href="admin.html">🔒 Admin</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🎓 Student Welfare Portal</div>
+  <h1>Your Voice Matters.<br>We Listen & Act.</h1>
+  <p>Submit complaints about campus infrastructure, hygiene, hostel facilities, laboratories, and more — and track their resolution in real time.</p>
+  <div class="hero-actions">
+    <a href="submit.html" class="btn btn-white">📝 Raise a Complaint</a>
+    <a href="track.html" class="btn btn-outline-white">🔍 Track Status</a>
+  </div>
+</section>
+
+<!-- COUNTER BANNER -->
+<div class="counter-banner">
+  <div class="counter-grid">
+    <div class="counter-item">
+      <div class="counter-num" id="cntTotal">0</div>
+      <div class="counter-label">Total Complaints</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num" id="cntPending">0</div>
+      <div class="counter-label">Pending</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num" id="cntProgress">0</div>
+      <div class="counter-label">In Progress</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num" id="cntResolved">0</div>
+      <div class="counter-label">Resolved</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <h2 class="section-title">Everything You Need</h2>
+  <p class="section-sub">A fully digital complaint lifecycle — from submission to resolution</p>
+  <div class="features-grid">
+    <div class="feature-card card-hover">
+      <span class="feature-icon">📝</span>
+      <h3>Submit Easily</h3>
+      <p>Fill a simple form with your details and complaint description. No login required for students.</p>
+    </div>
+    <div class="feature-card card-hover">
+      <span class="feature-icon">🔍</span>
+      <h3>Track in Real Time</h3>
+      <p>Use your unique Complaint ID to instantly check your complaint status anytime.</p>
+    </div>
+    <div class="feature-card card-hover">
+      <span class="feature-icon">⚡</span>
+      <h3>Fast Resolution</h3>
+      <p>Admin team reviews and updates your complaint status — Pending → In Progress → Resolved.</p>
+    </div>
+    <div class="feature-card card-hover">
+      <span class="feature-icon">🔒</span>
+      <h3>Secure Admin Panel</h3>
+      <p>Protected dashboard for administrators to manage all complaints with full filter and search.</p>
+    </div>
+    <div class="feature-card card-hover">
+      <span class="feature-icon">📊</span>
+      <h3>Live Statistics</h3>
+      <p>Real-time counts of total, pending, in-progress, and resolved complaints at a glance.</p>
+    </div>
+    <div class="feature-card card-hover">
+      <span class="feature-icon">📱</span>
+      <h3>Mobile Friendly</h3>
+      <p>Fully responsive design works beautifully on phones, tablets, and desktops.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" style="background:#F8FAFF;">
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-sub">Simple steps to get your complaint resolved</p>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="step-num">1</div>
+      <h3>Fill the Form</h3>
+      <p>Enter your name, roll number, department, category, and describe your issue.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-num">2</div>
+      <h3>Get Your ID</h3>
+      <p>A unique Complaint ID is generated and shown instantly. Save it for tracking.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-num">3</div>
+      <h3>Admin Reviews</h3>
+      <p>The admin team logs in and reviews your complaint, then updates its status.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-num">4</div>
+      <h3>Track & Resolved</h3>
+      <p>Enter your Complaint ID at any time to see the current status until it's resolved.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+  <h2 class="section-title">Complaint Categories</h2>
+  <p class="section-sub">We handle all types of campus concerns</p>
+  <div class="cat-chips">
+    <span class="cat-chip">🏗️ Infrastructure</span>
+    <span class="cat-chip">🧹 Hygiene</span>
+    <span class="cat-chip">🏠 Hostel Facilities</span>
+    <span class="cat-chip">🔬 Laboratory Equipment</span>
+    <span class="cat-chip">📋 Other Issues</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 style="font-size:1.6rem;font-weight:800;color:var(--primary-dark);margin-bottom:.75rem;">
+    Ready to Make Your Campus Better?
+  </h2>
+  <p style="color:var(--text-muted);margin-bottom:1.75rem;">Submit your complaint now — it takes less than 2 minutes.</p>
+  <a href="submit.html" class="btn btn-primary" style="font-size:1rem;padding:.85rem 2rem;">
+    📝 Submit a Complaint
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>StudentCMS</strong> &mdash; Student Complaint Management System &copy; 2026
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+  initNavbar();
+
+  // Animate home counters from LocalStorage data
+  window.addEventListener('DOMContentLoaded', () => {
+    const stats = calcStats(getComplaints());
+    animateCounter(document.getElementById('cntTotal'),    stats.total);
+    animateCounter(document.getElementById('cntPending'),  stats.pending);
+    animateCounter(document.getElementById('cntProgress'), stats.inProgress);
+    animateCounter(document.getElementById('cntResolved'), stats.resolved);
+  });
+</script>
+</body>
+</html>
