@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Track Complaint | StudentCMS</title>
-    <meta name="description" content="Track the status of your campus complaint using your unique Complaint ID." />
+    <title>Track Feedback | Vignan Feedback System</title>
+    <meta name="description"
+        content="Track the status of your campus feedback using your unique Feedback ID at Vignan University." />
     <link rel="stylesheet" href="css/style.css" />
     <style>
         .track-wrap {
@@ -150,15 +151,15 @@
         <a href="index.html" class="navbar-brand">
             <span class="brand-icon">🎓</span>
             <div>
-                <span class="brand-text">StudentCMS</span>
-                <span class="brand-sub">Complaint Management System</span>
+                <span class="brand-text">Vignan Feedback System</span>
+                <span class="brand-sub">Student Feedback Portal</span>
             </div>
         </a>
         <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="submit.html">📝 Submit Complaint</a></li>
-            <li><a href="track.html">🔍 Track Complaint</a></li>
+            <li><a href="submit.html">📝 Submit Feedback</a></li>
+            <li><a href="track.html">🔍 Track Feedback</a></li>
             <li><a href="admin.html">🔒 Admin</a></li>
         </ul>
     </nav>
@@ -166,8 +167,8 @@
     <main class="page-content">
         <div class="track-wrap">
             <div class="page-header">
-                <h2>🔍 Track Your Complaint</h2>
-                <p>Enter your unique Complaint ID to view the current status and details.</p>
+                <h2>🔍 Track Your Feedback</h2>
+                <p>Enter your unique Feedback ID to view the current status and details.</p>
             </div>
 
             <!-- Alert -->
@@ -175,11 +176,11 @@
 
             <!-- Input Card -->
             <div class="track-input-card">
-                <h2>Enter Complaint ID</h2>
-                <p>Your Complaint ID was shown after you submitted your complaint (e.g. COMP-XXXXX-YYYY).</p>
+                <h2>Enter Feedback ID</h2>
+                <p>Your Feedback ID was shown after you submitted your feedback (e.g. COMP-XXXXX-YYYY).</p>
                 <div class="track-input-row">
                     <input type="text" id="trackInput" placeholder="COMP-XXXXXXXX-XXXX" maxlength="30" />
-                    <button class="btn btn-primary" id="trackBtn" onclick="trackComplaint()">🔍 Track</button>
+                    <button class="btn btn-primary" id="trackBtn" onclick="trackFeedback()">🔍 Track</button>
                 </div>
                 <p id="trackInputError" class="field-error"></p>
             </div>
@@ -191,7 +192,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <strong>StudentCMS</strong> &mdash; Student Complaint Management System &copy; 2026
+        <strong>Vignan Feedback System</strong> &mdash; Vignan University Student Portal &copy; 2026
     </footer>
 
     <script src="js/app.js"></script>

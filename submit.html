@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Submit Complaint | StudentCMS</title>
+    <title>Submit Feedback | Vignan Feedback System</title>
     <meta name="description"
-        content="Submit a new campus complaint for infrastructure, hygiene, hostel, labs, or other issues." />
+        content="Submit a new campus feedback for infrastructure, hygiene, hostel, labs, or other issues at Vignan University." />
     <link rel="stylesheet" href="css/style.css" />
     <style>
         .success-box {
@@ -78,15 +78,15 @@
         <a href="index.html" class="navbar-brand">
             <span class="brand-icon">🎓</span>
             <div>
-                <span class="brand-text">StudentCMS</span>
-                <span class="brand-sub">Complaint Management System</span>
+                <span class="brand-text">Vignan Feedback System</span>
+                <span class="brand-sub">Student Feedback Portal</span>
             </div>
         </a>
         <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="submit.html">📝 Submit Complaint</a></li>
-            <li><a href="track.html">🔍 Track Complaint</a></li>
+            <li><a href="submit.html">📝 Submit Feedback</a></li>
+            <li><a href="track.html">🔍 Track Feedback</a></li>
             <li><a href="admin.html">🔒 Admin</a></li>
         </ul>
     </nav>
@@ -101,8 +101,8 @@
         <div id="successSection" style="display:none; width:100%; text-align:center;">
             <div class="success-box">
                 <div class="success-icon">🎉</div>
-                <h3>Complaint Submitted Successfully!</h3>
-                <p>Your complaint has been registered. Use the Complaint ID below to track its status.</p>
+                <h3>Feedback Submitted Successfully!</h3>
+                <p>Your feedback has been registered. Use the Feedback ID below to track its status.</p>
                 <div class="complaint-id-display" id="displayedId">—</div>
                 <button class="copy-btn" id="copyBtn" onclick="copyId()">📋 Copy ID</button>
                 <div style="display:flex; gap:.75rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap;">
@@ -115,8 +115,8 @@
         <!-- Form Section -->
         <div id="formSection" style="width:100%;">
             <div class="form-card">
-                <h2>📝 Raise a Complaint</h2>
-                <p class="form-subtitle">Fill in the form below. All fields are required. A unique Complaint ID will be
+                <h2>📝 Submit Your Feedback</h2>
+                <p class="form-subtitle">Fill in the form below. All fields are required. A unique Feedback ID will be
                     generated upon submission.</p>
 
                 <form id="complaintForm" novalidate>
@@ -183,7 +183,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <strong>StudentCMS</strong> &mdash; Student Complaint Management System &copy; 2026
+        <strong>Vignan Feedback System</strong> &mdash; Vignan University Student Portal &copy; 2026
     </footer>
 
     <script src="js/app.js"></script>
